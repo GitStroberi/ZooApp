@@ -20,13 +20,40 @@ class AnimalListAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as? AnimalViewHolder)?.bind(animals[position])
+        //change the background color of the cell that contains the animal name and continent based on the continent
+        val animal = animals[position]
+        (holder as AnimalViewHolder).bind(animal)
+
+        when(animal.continent) {
+            "Africa" -> {
+                holder.cell.setBackgroundColor(holder.itemView.resources.getColor(R.color.yellow))
+            }
+            "Asia" -> {
+                holder.cell.setBackgroundColor(holder.itemView.resources.getColor(R.color.red))
+            }
+            "Europe" -> {
+                holder.cell.setBackgroundColor(holder.itemView.resources.getColor(R.color.green))
+            }
+            "North America" -> {
+                holder.cell.setBackgroundColor(holder.itemView.resources.getColor(R.color.brown))
+            }
+            "South America" -> {
+                holder.cell.setBackgroundColor(holder.itemView.resources.getColor(R.color.orange))
+            }
+            "Australia" -> {
+                holder.cell.setBackgroundColor(holder.itemView.resources.getColor(R.color.purple_200))
+            }
+            "Antarctica" -> {
+                holder.cell.setBackgroundColor(holder.itemView.resources.getColor(R.color.blue))
+            }
+        }
     }
 
     inner class AnimalViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val animalNameTextView: TextView
         private val animalContinentTextView: TextView
+        val cell = view.findViewById<View>(R.id.cell)
 
         init {
             animalNameTextView = view.findViewById(R.id.tvAnimalName)
@@ -46,16 +73,6 @@ class AnimalListAdapter(
             Australia: Purple background + N and CO aligned in the center;
             Antarctica: Blue background + N and CO aligned in the center, separated by a black line.
              */
-
-            when(animal.continent) {
-                "Africa" -> animalContinentTextView.setBackgroundResource(R.color.yellow)
-                "Asia" -> animalContinentTextView.setBackgroundResource(R.color.red)
-                "Europe" -> animalContinentTextView.setBackgroundResource(R.color.green)
-                "North America" -> animalContinentTextView.setBackgroundResource(R.color.brown)
-                "South America" -> animalContinentTextView.setBackgroundResource(R.color.orange)
-                "Australia" -> animalContinentTextView.setBackgroundResource(R.color.purple)
-                "Antarctica" -> animalContinentTextView.setBackgroundResource(R.color.blue)
-            }
 
             when(animal.continent) {
                 "Africa" -> {

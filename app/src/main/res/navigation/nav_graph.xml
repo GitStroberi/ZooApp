@@ -3,24 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/fragment_zoo_list">
-    >
-
+    app:startDestination="@id/zooListFragment">
     <fragment
-        android:id="@+id/fragment_zoo_list"
+        android:id="@+id/zooListFragment"
         android:name="com.example.zooapp.ZooListFragment"
         android:label="ZooListFragment"
-        tools:layout="@layout/fragment_zoo_list">
+        tools:layout="@layout/fragment_zoo_list"
+        >
+        <action
+            android:id="@+id/action_zooListFragment_to_animalDetailFragment"
+            app:destination="@id/animalDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/animalDetailFragment"
+        android:name="com.example.zooapp.AnimalDetailFragment"
+        android:label="AnimalDetailFragment"
+        tools:layout="@layout/fragment_animal_detail"
+        >
         <argument
-            android:name="animal"
+            android:name="animalName"
+            app:argType="string" />
+        <argument
+            android:name="animalContinent"
             app:argType="string" />
     </fragment>
 
-    <fragment
-        android:id="@+id/fragment_animal_detail"
-        android:name="com.example.zooapp.AnimalDetailFragment"
-        android:label="AnimalDetailFragment"
-        tools:layout="@layout/fragment_animal_detail">
-    </fragment>
 
 </navigation>
+
