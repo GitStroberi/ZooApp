@@ -9,6 +9,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.zooapp.models.Animal
 
 class AnimalDetailFragment : Fragment() {
+
     val arguments: AnimalDetailFragmentArgs by navArgs()
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,6 +24,7 @@ class AnimalDetailFragment : Fragment() {
         val animalName : String = arguments.animalName
         val animalContinent : String = arguments.animalContinent
 
-
+        view.findViewById<android.widget.TextView>(R.id.tvAnimalName).text = animalName
+        view.findViewById<android.widget.TextView>(R.id.tvAnimalContinent).text = animalContinent
     }
 }

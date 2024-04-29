@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:padding="16dp"
     android:layout_marginBottom="8dp"
+    android:background="@color/brown"
     app:cardCornerRadius="8dp"  app:cardElevation="4dp"    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,7 +22,6 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/tvContinentName"
             tools:text="Animal Name" />
@@ -32,7 +32,6 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvAnimalName"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:text="Continent Name"

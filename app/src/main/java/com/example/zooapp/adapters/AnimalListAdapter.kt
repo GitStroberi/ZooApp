@@ -18,36 +18,49 @@ class AnimalListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return AnimalViewHolder(inflater.inflate(R.layout.item_zoo_cell, parent, false))
+        val layoutId = when (viewType) {
+            VIEW_TYPE_AFRICA -> R.layout.africa_cell
+            VIEW_TYPE_ASIA -> R.layout.asia_cell
+            VIEW_TYPE_EUROPE -> R.layout.europe_cell
+            VIEW_TYPE_NORTH_AMERICA -> R.layout.n_america_cell
+            VIEW_TYPE_SOUTH_AMERICA -> R.layout.s_america_cell
+            VIEW_TYPE_AUSTRALIA -> R.layout.australia_cell
+            VIEW_TYPE_ANTARCTICA -> R.layout.antarctica_cell
+            else -> R.layout.item_zoo_cell
+        }
+        val view = inflater.inflate(layoutId, parent, false)
+
+        //set the background color of the cell based on the continent
+        when (viewType) {
+            VIEW_TYPE_AFRICA -> view.setBackgroundColor(view.resources.getColor(R.color.yellow))
+            VIEW_TYPE_ASIA -> view.setBackgroundColor(view.resources.getColor(R.color.red))
+            VIEW_TYPE_EUROPE -> view.setBackgroundColor(view.resources.getColor(R.color.green))
+            VIEW_TYPE_NORTH_AMERICA -> view.setBackgroundColor(view.resources.getColor(R.color.brown))
+            VIEW_TYPE_SOUTH_AMERICA -> view.setBackgroundColor(view.resources.getColor(R.color.orange))
+            VIEW_TYPE_AUSTRALIA -> view.setBackgroundColor(view.resources.getColor(R.color.purple))
+            VIEW_TYPE_ANTARCTICA -> view.setBackgroundColor(view.resources.getColor(R.color.blue))
+            else -> view.setBackgroundColor(view.resources.getColor(R.color.white))
+        }
+
+        return AnimalViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        //change the background color of the cell that contains the animal name and continent based on the continent
         val animal = animals[position]
         (holder as AnimalViewHolder).bind(animal)
+    }
 
-        when(animal.continent) {
-            "Africa" -> {
-                holder.cell.setBackgroundColor(holder.itemView.resources.getColor(R.color.yellow))
-            }
-            "Asia" -> {
-                holder.cell.setBackgroundColor(holder.itemView.resources.getColor(R.color.red))
-            }
-            "Europe" -> {
-                holder.cell.setBackgroundColor(holder.itemView.resources.getColor(R.color.green))
-            }
-            "North America" -> {
-                holder.cell.setBackgroundColor(holder.itemView.resources.getColor(R.color.brown))
-            }
-            "South America" -> {
-                holder.cell.setBackgroundColor(holder.itemView.resources.getColor(R.color.orange))
-            }
-            "Australia" -> {
-                holder.cell.setBackgroundColor(holder.itemView.resources.getColor(R.color.purple_200))
-            }
-            "Antarctica" -> {
-                holder.cell.setBackgroundColor(holder.itemView.resources.getColor(R.color.blue))
-            }
+    override fun getItemViewType(position: Int): Int {
+        val continent = animals[position].continent
+        return when (continent) {
+            "Africa" -> VIEW_TYPE_AFRICA
+            "Asia" -> VIEW_TYPE_ASIA
+            "Europe" -> VIEW_TYPE_EUROPE
+            "North America" -> VIEW_TYPE_NORTH_AMERICA
+            "South America" -> VIEW_TYPE_SOUTH_AMERICA
+            "Australia" -> VIEW_TYPE_AUSTRALIA
+            "Antarctica" -> VIEW_TYPE_ANTARCTICA
+            else -> VIEW_TYPE_DEFAULT
         }
     }
 
@@ -76,46 +89,17 @@ class AnimalListAdapter(
             animalNameTextView.text = animal.name
             animalContinentTextView.text = animal.continent
 
-            /**
-            Europe: Green background + N and CO aligned to the left.
-            Africa: Yellow background + N and CO aligned to the left separated by a black line;
-            Asia: Red background + N and CO aligned horizontally, separated by a black line;
-            North America: Brown background + N and CO aligned to the right;
-            South America: Orange background + N and CO aligned to the right, separated by a black line;
-            Australia: Purple background + N and CO aligned in the center;
-            Antarctica: Blue background + N and CO aligned in the center, separated by a black line.
-             */
-
-            when(animal.continent) {
-                "Africa" -> {
-                    animalNameTextView.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
-                    animalContinentTextView.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
-                }
-                "Asia" -> {
-                    animalNameTextView.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
-                    animalContinentTextView.textAlignment = View.TEXT_ALIGNMENT_VIEW_END
-                }
-                "Europe" -> {
-                    animalNameTextView.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
-                    animalContinentTextView.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
-                }
-                "North America" -> {
-                    animalNameTextView.textAlignment = View.TEXT_ALIGNMENT_VIEW_END
-                    animalContinentTextView.textAlignment = View.TEXT_ALIGNMENT_VIEW_END
-                }
-                "South America" -> {
-                    animalNameTextView.textAlignment = View.TEXT_ALIGNMENT_VIEW_END
-                    animalContinentTextView.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
-                }
-                "Australia" -> {
-                    animalNameTextView.textAlignment = View.TEXT_ALIGNMENT_CENTER
-                    animalContinentTextView.textAlignment = View.TEXT_ALIGNMENT_CENTER
-                }
-                "Antarctica" -> {
-                    animalNameTextView.textAlignment = View.TEXT_ALIGNMENT_CENTER
-                    animalContinentTextView.textAlignment = View.TEXT_ALIGNMENT_CENTER
-                }
-            }
         }
+    }
+
+    companion object {
+        private const val VIEW_TYPE_DEFAULT = 0
+        private const val VIEW_TYPE_AFRICA = 1
+        private const val VIEW_TYPE_ASIA = 2
+        private const val VIEW_TYPE_EUROPE = 3
+        private const val VIEW_TYPE_NORTH_AMERICA = 4
+        private const val VIEW_TYPE_SOUTH_AMERICA = 5
+        private const val VIEW_TYPE_AUSTRALIA = 6
+        private const val VIEW_TYPE_ANTARCTICA = 7
     }
 }
