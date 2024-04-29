@@ -12,7 +12,15 @@
         >
         <action
             android:id="@+id/action_zooListFragment_to_animalDetailFragment"
-            app:destination="@id/animalDetailFragment" />
+            app:destination="@id/animalDetailFragment" >
+            <argument
+                android:name="animalName"
+                app:argType="string" />
+            <argument
+                android:name="animalContinent"
+                app:argType="string" />
+        </action>
+
     </fragment>
 
     <fragment

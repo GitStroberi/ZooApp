@@ -4,8 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zooapp.R
+import com.example.zooapp.ZooListFragmentDirections
 import com.example.zooapp.models.Animal
 
 class AnimalListAdapter(
@@ -58,6 +60,16 @@ class AnimalListAdapter(
         init {
             animalNameTextView = view.findViewById(R.id.tvAnimalName)
             animalContinentTextView = view.findViewById(R.id.tvContinentName)
+
+            view.setOnClickListener {
+                val animal = animals[adapterPosition]
+                //navigate to the detail screen
+                val action = ZooListFragmentDirections.actionZooListFragmentToAnimalDetailFragment(
+                    animal.name ?: "",
+                    animal.continent ?: ""
+                )
+                view.findNavController().navigate(action)
+            }
         }
 
         fun bind(animal: Animal) {
