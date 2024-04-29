@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zooapp.R
@@ -29,18 +30,6 @@ class AnimalListAdapter(
             else -> R.layout.item_zoo_cell
         }
         val view = inflater.inflate(layoutId, parent, false)
-
-        //set the background color of the cell based on the continent
-        when (viewType) {
-            VIEW_TYPE_AFRICA -> view.setBackgroundColor(view.resources.getColor(R.color.yellow))
-            VIEW_TYPE_ASIA -> view.setBackgroundColor(view.resources.getColor(R.color.red))
-            VIEW_TYPE_EUROPE -> view.setBackgroundColor(view.resources.getColor(R.color.green))
-            VIEW_TYPE_NORTH_AMERICA -> view.setBackgroundColor(view.resources.getColor(R.color.brown))
-            VIEW_TYPE_SOUTH_AMERICA -> view.setBackgroundColor(view.resources.getColor(R.color.orange))
-            VIEW_TYPE_AUSTRALIA -> view.setBackgroundColor(view.resources.getColor(R.color.purple))
-            VIEW_TYPE_ANTARCTICA -> view.setBackgroundColor(view.resources.getColor(R.color.blue))
-            else -> view.setBackgroundColor(view.resources.getColor(R.color.white))
-        }
 
         return AnimalViewHolder(view)
     }
@@ -68,15 +57,15 @@ class AnimalListAdapter(
 
         private val animalNameTextView: TextView
         private val animalContinentTextView: TextView
-        val cell = view.findViewById<View>(R.id.cell)
+        private val cardView: CardView
 
         init {
             animalNameTextView = view.findViewById(R.id.tvAnimalName)
             animalContinentTextView = view.findViewById(R.id.tvContinentName)
+            cardView = view.findViewById(R.id.cardView)
 
             view.setOnClickListener {
                 val animal = animals[adapterPosition]
-                //navigate to the detail screen
                 val action = ZooListFragmentDirections.actionZooListFragmentToAnimalDetailFragment(
                     animal.name ?: "",
                     animal.continent ?: ""
@@ -89,6 +78,17 @@ class AnimalListAdapter(
             animalNameTextView.text = animal.name
             animalContinentTextView.text = animal.continent
 
+            // Set background color for the CardView based on the continent
+            when (animal.continent) {
+                "Africa" -> cardView.setCardBackgroundColor(cardView.context.getColor(R.color.yellow))
+                "Asia" -> cardView.setCardBackgroundColor(cardView.context.getColor(R.color.red))
+                "Europe" -> cardView.setCardBackgroundColor(cardView.context.getColor(R.color.green))
+                "North America" -> cardView.setCardBackgroundColor(cardView.context.getColor(R.color.brown))
+                "South America" -> cardView.setCardBackgroundColor(cardView.context.getColor(R.color.orange))
+                "Australia" -> cardView.setCardBackgroundColor(cardView.context.getColor(R.color.purple_200))
+                "Antarctica" -> cardView.setCardBackgroundColor(cardView.context.getColor(R.color.blue))
+                else -> cardView.setCardBackgroundColor(cardView.context.getColor(R.color.white))
+            }
         }
     }
 

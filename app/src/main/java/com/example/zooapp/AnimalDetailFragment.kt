@@ -26,5 +26,17 @@ class AnimalDetailFragment : Fragment() {
 
         view.findViewById<android.widget.TextView>(R.id.tvAnimalName).text = animalName
         view.findViewById<android.widget.TextView>(R.id.tvAnimalContinent).text = animalContinent
+
+        //set background color of the cell based on the continent
+        when (animalContinent) {
+            "Africa" -> view.setBackgroundColor(view.resources.getColor(R.color.yellow))
+            "Asia" -> view.setBackgroundColor(view.resources.getColor(R.color.red))
+            "Europe" -> view.setBackgroundColor(view.resources.getColor(R.color.green))
+            "North America" -> view.setBackgroundColor(view.resources.getColor(R.color.brown))
+            "South America" -> view.setBackgroundColor(view.resources.getColor(R.color.orange))
+            "Australia" -> view.setBackgroundColor(view.resources.getColor(R.color.purple))
+            "Antarctica" -> view.setBackgroundColor(view.resources.getColor(R.color.blue))
+            else -> view.setBackgroundColor(view.resources.getColor(R.color.white))
+        }
     }
 }
