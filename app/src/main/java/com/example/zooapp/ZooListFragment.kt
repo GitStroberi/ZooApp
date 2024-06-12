@@ -8,12 +8,17 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zooapp.adapters.AnimalListAdapter
 import com.example.zooapp.data.ZooViewModel
 import com.example.zooapp.models.Animal
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 
 class ZooListFragment : Fragment() {
     private val itemList = ArrayList<Animal>()
@@ -56,6 +61,25 @@ class ZooListFragment : Fragment() {
         zooViewModel.allAnimals.observe(viewLifecycleOwner) { animals ->
             adapter.updateAnimals(animals)
         }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                zooViewModel.errorChannel.collect { error ->
+                    handleAddAnimalError(error, view)
+                }
+            }
+        }
+    }
+
+    private fun handleAddAnimalError(error: ZooViewModel.AddAnimalError, view: View) {
+        val errorMessage = when (error) {
+            ZooViewModel.AddAnimalError.EmptyFields -> "Please fill in both name and continent fields."
+            ZooViewModel.AddAnimalError.InvalidContinent -> "Please enter a valid continent."
+            // ZooViewModel.AddAnimalError.DuplicateAnimal -> "Animal already exists in the database." // No update message here
+            ZooViewModel.AddAnimalError.UnknownError -> "An error occurred while deleting. Please try again."
+        }
+
+        Snackbar.make(view, errorMessage, Snackbar.LENGTH_SHORT).show()
     }
 
     private fun setupAnimalList() {

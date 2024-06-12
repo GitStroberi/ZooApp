@@ -6,6 +6,9 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.findViewTreeLifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zooapp.R
@@ -13,6 +16,8 @@ import com.example.zooapp.ZooListFragmentDirections
 import com.example.zooapp.data.ZooViewModel
 import com.example.zooapp.data.database.AnimalEntity
 import com.example.zooapp.models.Animal
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 
 class AnimalListAdapter(
     private var animals: List<AnimalEntity>,
@@ -85,8 +90,21 @@ class AnimalListAdapter(
 
             deleteButton.setOnClickListener {
                 val animal = animals[adapterPosition]
-                zooViewModel.deleteAnimal(animal)
+                itemView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
+                    zooViewModel.deleteAnimal(animal)
+                }
             }
+        }
+
+        private fun handleAddAnimalError(error: ZooViewModel.AddAnimalError, view: View) {
+            val errorMessage = when (error) {
+                ZooViewModel.AddAnimalError.EmptyFields -> "Please fill in both name and continent fields."
+                ZooViewModel.AddAnimalError.InvalidContinent -> "Please enter a valid continent."
+                // ZooViewModel.AddAnimalError.DuplicateAnimal -> "Animal already exists in the database." // No update message here
+                ZooViewModel.AddAnimalError.UnknownError -> "An error occurred while deleting. Please try again."
+            }
+
+            Snackbar.make(view, errorMessage, Snackbar.LENGTH_SHORT).show()
         }
 
         fun bind(animal: AnimalEntity) {
