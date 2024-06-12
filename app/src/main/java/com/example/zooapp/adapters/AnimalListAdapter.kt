@@ -3,16 +3,20 @@ package com.example.zooapp.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zooapp.R
 import com.example.zooapp.ZooListFragmentDirections
+import com.example.zooapp.data.ZooViewModel
+import com.example.zooapp.data.database.AnimalEntity
 import com.example.zooapp.models.Animal
 
 class AnimalListAdapter(
-    private val animals: List<Animal>
+    private var animals: List<AnimalEntity>,
+    private val zooViewModel: ZooViewModel
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemCount() = animals.size
@@ -53,11 +57,17 @@ class AnimalListAdapter(
         }
     }
 
+    fun updateAnimals(newAnimals: List<AnimalEntity>) {
+        animals = newAnimals
+        notifyDataSetChanged()
+    }
+
     inner class AnimalViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val animalNameTextView: TextView
         private val animalContinentTextView: TextView
         private val cardView: CardView
+        private val deleteButton: ImageButton = view.findViewById(R.id.btnDeleteAnimal) // Delete button
 
         init {
             animalNameTextView = view.findViewById(R.id.tvAnimalName)
@@ -72,9 +82,14 @@ class AnimalListAdapter(
                 )
                 view.findNavController().navigate(action)
             }
+
+            deleteButton.setOnClickListener {
+                val animal = animals[adapterPosition]
+                zooViewModel.deleteAnimal(animal)
+            }
         }
 
-        fun bind(animal: Animal) {
+        fun bind(animal: AnimalEntity) {
             animalNameTextView.text = animal.name
             animalContinentTextView.text = animal.continent
 

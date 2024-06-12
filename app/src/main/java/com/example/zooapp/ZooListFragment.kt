@@ -2,17 +2,23 @@ package com.example.zooapp
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zooapp.adapters.AnimalListAdapter
+import com.example.zooapp.data.ZooViewModel
 import com.example.zooapp.models.Animal
 
 class ZooListFragment : Fragment() {
     private val itemList = ArrayList<Animal>()
-    private val adapter = AnimalListAdapter(itemList)
+    private val zooViewModel: ZooViewModel by viewModels()
+    private lateinit var adapter: AnimalListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -20,10 +26,36 @@ class ZooListFragment : Fragment() {
         savedInstanceState: Bundle?
     ) = inflater.inflate(R.layout.fragment_zoo_list, container, false)
 
-    override fun onViewCreated(view: android.view.View, savedInstanceState: android.os.Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupAnimalList()
-        getAnimalList()
+
+        // Setup RecyclerView
+        adapter = AnimalListAdapter(emptyList(), zooViewModel)
+        view.findViewById<RecyclerView>(R.id.rvZooList).apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = this@ZooListFragment.adapter
+        }
+
+        // Input fields and Add button
+        val nameInput = view.findViewById<EditText>(R.id.etAnimalName)
+        val continentInput = view.findViewById<EditText>(R.id.etContinent)
+        val addButton = view.findViewById<Button>(R.id.btn_add_animal)
+
+        // Button click listener
+        addButton.setOnClickListener {
+            val name = nameInput.text.toString().trim()
+            val continent = continentInput.text.toString().trim()
+            zooViewModel.addAnimal(name, continent)
+
+            // Clear input fields
+            nameInput.text.clear()
+            continentInput.text.clear()
+        }
+
+        // Observe changes in animal list
+        zooViewModel.allAnimals.observe(viewLifecycleOwner) { animals ->
+            adapter.updateAnimals(animals)
+        }
     }
 
     private fun setupAnimalList() {

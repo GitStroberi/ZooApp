@@ -21,22 +21,30 @@ class ZooViewModel(application: Application) : AndroidViewModel(application) {
 
     fun addAnimal(name: String, continent: String) {
         viewModelScope.launch {
-            // Check for duplicates
-            val count = repository.getAnimalCountByName(name)
-            if (count > 0) {
-                // Handle duplicate (show a message or take other action)
+            // Input validation: Ensure both fields are filled and the continent is valid
+            if (name.isBlank() || continent.isBlank()) {
+                // Show an error message (e.g., using Toast or Snackbar)
+
                 return@launch
             }
 
-            // Check if continent is valid
             val validContinents = listOf("Africa", "Asia", "Europe", "North America", "South America", "Australia", "Antarctica")
-            if (continent.isEmpty() || !validContinents.contains(continent)) {
-                // Handle invalid continent (show a message or take other action)
+            if (!validContinents.contains(continent)) {
+
                 return@launch
             }
 
-            // Insert animal if valid
-            repository.insert(AnimalEntity(name = name, continent = continent))
+            // Check for duplicates
+            val existingAnimal = repository.getAnimalByName(name)
+            if (existingAnimal != null) {
+                // Update the existing animal with the new continent
+                val updatedAnimal = existingAnimal.copy(continent = continent)
+                repository.updateAnimal(updatedAnimal)
+            } else {
+                // Insert a new animal if it doesn't exist
+                repository.insert(AnimalEntity(name = name, continent = continent))
+            }
+
         }
     }
 

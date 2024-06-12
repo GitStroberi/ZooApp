@@ -15,7 +15,15 @@ class ZooRepository(private val zooDao: ZooDao) {
         zooDao.delete(animal)
     }
 
+    suspend fun updateAnimal(animal: AnimalEntity) {
+        zooDao.insert(animal)
+    }
+
     suspend fun getAnimalCountByName(name: String): Int {
         return zooDao.getAnimalCountByName(name)
+    }
+
+    suspend fun getAnimalByName(name: String): AnimalEntity? {
+        return zooDao.getAnimalByName(name)
     }
 }

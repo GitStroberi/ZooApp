@@ -20,4 +20,7 @@ interface ZooDao {
 
     @Query("SELECT COUNT(*) FROM animals WHERE LOWER(name) = LOWER(:name)")
     suspend fun getAnimalCountByName(name: String): Int
+
+    @Query("SELECT * FROM animals WHERE LOWER(name) = LOWER(:name)")
+    suspend fun getAnimalByName(name: String): AnimalEntity?
 }

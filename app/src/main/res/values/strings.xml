@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">ZooApp</string>
     <string name="exit">Exit</string>
+    <string name="add_animal">Add animal</string>
+    <string name="continent_name">Continent name</string>
+    <string name="animal_name">Animal name</string>
 </resources>
