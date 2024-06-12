@@ -16,23 +16,12 @@
         android:layout_height="wrap_content"
         android:padding="8dp">
 
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/textGroup"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="tvAnimalName,divider,tvContinentName"
-            app:layout_constraintEnd_toStartOf="@id/btnDeleteAnimal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
-
         <TextView
             android:id="@+id/tvAnimalName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnDeleteAnimal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/tvContinentName"
@@ -42,17 +31,17 @@
             android:id="@+id/divider"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@android:color/black"
+            android:background="?android:attr/textColorPrimary"
             app:layout_constraintTop_toBottomOf="@id/tvAnimalName"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toStartOf="@+id/btnDeleteAnimal" />
 
         <TextView
             android:id="@+id/tvContinentName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnDeleteAnimal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvAnimalName"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -62,11 +51,11 @@
             android:id="@+id/btnDeleteAnimal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Delete Animal"
+            android:contentDescription="@string/delete_animal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/textGroup"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:drawable/ic_menu_delete"
             tools:ignore="TouchTargetSizeCheck" />
